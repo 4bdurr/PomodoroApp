@@ -2,8 +2,7 @@
 
 A simple and elegant Pomodoro timer application built with Python and PySide6 to help you stay focused and productive.
 
-![Screenshot (Tambahkan screenshot aplikasi Anda di sini jika ada)](./assets/screenshot_placeholder.png) 
-*(Anda bisa mengganti `screenshot_placeholder.png` dengan path ke screenshot aplikasi Anda jika sudah ada, atau hapus baris ini)*
+(./assets/screenshot_placeholder.png) 
 
 ## Features
 

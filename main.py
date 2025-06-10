@@ -1,8 +1,19 @@
 import sys
+import os # Ditambahkan untuk resource_path
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSizePolicy
 from PySide6.QtCore import QTimer, Qt, QTime, Signal, QUrl # Added QUrl
 from PySide6.QtGui import QFont, QIcon
 from PySide6.QtMultimedia import QSoundEffect # Added QSoundEffect
+
+def resource_path(relative_path):
+    """ Mendapatkan path absolut ke resource, berfungsi untuk dev dan PyInstaller """
+    try:
+        # PyInstaller membuat folder temp dan menyimpan path di _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class PomodoroApp(QWidget):
     # Constants for Pomodoro states
@@ -42,7 +53,7 @@ class PomodoroApp(QWidget):
     def init_sound(self):
         """Initializes the sound effect player."""
         self.notification_sound = QSoundEffect(self)
-        sound_file_path = "assets/notification.wav"
+        sound_file_path = resource_path("assets/notification.wav") # Menggunakan resource_path
         try:
             self.notification_sound.setSource(QUrl.fromLocalFile(sound_file_path))
             self.notification_sound.setVolume(0.75)
@@ -57,11 +68,12 @@ class PomodoroApp(QWidget):
     def init_ui(self):
         self.setWindowTitle("Pomodoro Timer")
         try:
-            app_icon = QIcon("assets/my_pomodoro_icon.png")
+            app_icon_path = resource_path("assets/my_pomodoro_icon.png") # Menggunakan resource_path
+            app_icon = QIcon(app_icon_path)
             if not app_icon.isNull():
                 self.setWindowIcon(app_icon)
             else:
-                print("Warning: Could not load application icon from assets/my_pomodoro_icon.png. Is the path correct and file valid?")
+                print(f"Warning: Could not load application icon from {app_icon_path}. Is the path correct and file valid?")
         except Exception as e:
             print(f"Error setting application icon: {e}")
 
@@ -118,10 +130,11 @@ class PomodoroApp(QWidget):
 
     def load_styles(self):
         try:
-            with open("styles.qss", "r") as f:
+            styles_path = resource_path("styles.qss") # Menggunakan resource_path
+            with open(styles_path, "r") as f:
                 self.setStyleSheet(f.read())
         except FileNotFoundError:
-            print("styles.qss not found. Using default styles.")
+            print(f"styles.qss not found at {styles_path}. Using default styles.")
         except Exception as e:
             print(f"Error loading styles.qss: {e}")
 

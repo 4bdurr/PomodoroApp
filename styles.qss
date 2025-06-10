@@ -1,0 +1,133 @@
+/* styles.qss */
+
+QWidget {
+    background-color: #2E3440; /* Nord Polar Night */
+    color: #D8DEE9; /* Nord Snow Storm */
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+#timerDisplay {
+    font-size: 72px;
+    font-weight: bold;
+    color: #88C0D0; /* Nord Frost - Blue */
+    margin-bottom: 10px;
+}
+
+#stateLabel {
+    font-size: 24px;
+    font-weight: bold;
+    color: #EBCB8B; /* Nord Frost - Yellow */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+#cycleDisplayLabel {
+    font-size: 14px;
+    color: #A3BE8C; /* Nord Aurora - Green */
+    margin-bottom: 20px;
+}
+
+QPushButton {
+    background-color: #4C566A; /* Nord Polar Night - Lighter */
+    color: #ECEFF4; /* Nord Snow Storm - Brighter */
+    border: 1px solid #3B4252; /* Nord Polar Night - Darker */
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    min-width: 80px;
+}
+
+PUSHButton:hover {
+    background-color: #5E81AC; /* Nord Frost - Dark Blue */
+    border: 1px solid #81A1C1; /* Nord Frost - Medium Blue */
+}
+
+PUSHButton:pressed {
+    background-color: #81A1C1; /* Nord Frost - Medium Blue */
+}
+
+PUSHButton:disabled {
+    background-color: #3B4252; /* Nord Polar Night - Darker */
+    color: #4C566A; /* Nord Polar Night - Lighter */
+}
+
+/* Specific button styling if needed */
+/* Style for the combined Start/Pause/Resume button */
+#actionButton[text="Start"] {
+    background-color: #A3BE8C; /* Nord Aurora - Green */
+    color: #2E3440;
+}
+#actionButton[text="Start"]:hover {
+    background-color: #B4D0A0;
+}
+
+#actionButton[text="Pause"] {
+    background-color: #EBCB8B; /* Nord Aurora - Yellow */
+    color: #2E3440;
+}
+#actionButton[text="Pause"]:hover {
+    background-color: #F0DDAA;
+}
+
+#actionButton[text="Resume"] {
+    background-color: #88C0D0; /* Nord Frost - Blue */
+    color: #2E3440;
+}
+#actionButton[text="Resume"]:hover {
+    background-color: #A0D8E8; /* Lighter blue for hover */
+}
+
+
+/* Old #startButton and #pauseButton styles - can be removed or kept for reference */
+/*
+#startButton {
+    background-color: #A3BE8C; 
+    color: #2E3440;
+}
+
+#startButton:hover {
+    background-color: #B4D0A0;
+}
+
+#pauseButton {
+    background-color: #EBCB8B; 
+    color: #2E3440;
+}
+
+#pauseButton:hover {
+    background-color: #F0DDAA;
+}
+*/
+
+#resetButton {
+    background-color: #BF616A; /* Nord Aurora - Red */
+    color: #ECEFF4;
+}
+
+#resetButton:hover {
+    background-color: #D08770; /* Nord Aurora - Orange (for hover on red) */
+}
+
+#skipButton {
+    background-color: #B48EAD; /* Nord Aurora - Purple */
+    color: #ECEFF4;
+}
+
+#skipButton:hover {
+    background-color: #C6A0C1;
+}
+
+/* Settings button styling (if you add it later) */
+/*
+#settingsButton {
+    background-color: #5E81AC; 
+    color: #ECEFF4;
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+#settingsButton:hover {
+    background-color: #81A1C1;
+}
+*/

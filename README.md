@@ -1,6 +1,6 @@
 # Pomodoro Timer App
 
-A simple and elegant Pomodoro timer application built with Python and PySide6 to help you stay focused and productive.
+A simple Pomodoro timer application built with Python and PySide6 to help you stay focused and productive.
 
 ![](./assets/screenshot_placeholder.png) 
 

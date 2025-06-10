@@ -23,8 +23,7 @@ A simple and elegant Pomodoro timer application built with Python and PySide6 to
 
 The easiest way to run the Pomodoro Timer App on Windows is to download the pre-built executable (`.exe`) file.
 
-1.  **Go to the [Releases Page](https://github.com/NAMA_PENGGUNA_ANDA/NAMA_REPO_ANDA/releases)**. 
-    *(Ganti `NAMA_PENGGUNA_ANDA/NAMA_REPO_ANDA` dengan username dan nama repositori GitHub Anda)*
+1.  **Go to the [Releases Page](https://github.com/4bdurr/PomodoroApp/releases/)**. 
 2.  Look for the latest release.
 3.  Under the "Assets" section of the latest release, download the `PomodoroApp.exe` file.
 4.  Save the `PomodoroApp.exe` file to a location on your computer.
@@ -43,10 +42,10 @@ If you want to build the application from the source code yourself, follow these
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/NAMA_PENGGUNA_ANDA/NAMA_REPO_ANDA.git
-    cd NAMA_REPO_ANDA 
+    git clone https://github.com/4bdurr/PomodoroApp.git
+    cd PomodoroApp 
     ```
-    *(Ganti `NAMA_PENGGUNA_ANDA/NAMA_REPO_ANDA` dengan username dan nama repositori GitHub Anda)*
+    *(Ganti `/4bdurr/PomodoroApp` dengan username dan nama repositori GitHub Anda)*
 
 2.  **Create a virtual environment (recommended):**
     ```bash
@@ -88,7 +87,3 @@ If you want to build the application from the source code yourself, follow these
 *   **Application Icon:** `assets/my_pomodoro_icon.png` (source), `assets/my_pomodoro_icon.ico` (for executable)
 *   **Notification Sound:** `assets/notification.wav`
 *   **Styling:** `styles.qss`
-
-## License
-
-*(Anda bisa menambahkan lisensi di sini, misalnya: This project is licensed under the MIT License - see the LICENSE.md file for details)*

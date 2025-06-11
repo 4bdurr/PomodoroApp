@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pomodoro App</title>
+    <!-- CSP direlaksasi untuk kemudahan pengembangan awal, bisa diperketat nanti -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Pomodoro Timer</h1>
+    <div id="timer-display">25:00</div>
+    <button id="start-btn">Start</button>
+    <button id="pause-btn">Pause</button>
+    <button id="reset-btn">Reset</button>
+    <p>Status: <span id="status">Idle</span></p>
+    <p>Siklus ke: <span id="cycle-count">0</span></p>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>

@@ -28,3 +28,7 @@ dist/
 .idea/
 *.swp
 *.swo
+
+# Node
+node_modules/
+package-lock.json

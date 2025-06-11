@@ -1,6 +1,8 @@
 import sys
 import os # Ditambahkan untuk resource_path
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSizePolicy
+from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
+                               QLabel, QPushButton, QSizePolicy, QDialog, 
+                               QFormLayout, QSpinBox, QDialogButtonBox) # Added QDialog, QFormLayout, QSpinBox, QDialogButtonBox
 from PySide6.QtCore import QTimer, Qt, QTime, Signal, QUrl # Added QUrl
 from PySide6.QtGui import QFont, QIcon
 from PySide6.QtMultimedia import QSoundEffect # Added QSoundEffect
@@ -14,6 +16,60 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+
+class SettingsDialog(QDialog):
+    def __init__(self, current_durations, current_pomos_before_long_break, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Settings")
+        self.setMinimumWidth(300)
+
+        # Store a copy of the current settings to populate the spinboxes
+        self.current_durations = dict(current_durations) 
+        self.current_pomos_before_long_break = current_pomos_before_long_break
+
+        main_layout = QVBoxLayout(self)
+        form_layout = QFormLayout()
+
+        self.pomodoro_duration_spinbox = QSpinBox()
+        self.pomodoro_duration_spinbox.setRange(1, 120)  # Min 1 min, Max 120 mins
+        self.pomodoro_duration_spinbox.setValue(self.current_durations.get(PomodoroApp.STATE_POMODORO, 25))
+        self.pomodoro_duration_spinbox.setSuffix(" min")
+        form_layout.addRow("Pomodoro Duration:", self.pomodoro_duration_spinbox)
+
+        self.short_break_duration_spinbox = QSpinBox()
+        self.short_break_duration_spinbox.setRange(1, 60)
+        self.short_break_duration_spinbox.setValue(self.current_durations.get(PomodoroApp.STATE_SHORT_BREAK, 5))
+        self.short_break_duration_spinbox.setSuffix(" min")
+        form_layout.addRow("Short Break Duration:", self.short_break_duration_spinbox)
+
+        self.long_break_duration_spinbox = QSpinBox()
+        self.long_break_duration_spinbox.setRange(1, 90)
+        self.long_break_duration_spinbox.setValue(self.current_durations.get(PomodoroApp.STATE_LONG_BREAK, 15))
+        self.long_break_duration_spinbox.setSuffix(" min")
+        form_layout.addRow("Long Break Duration:", self.long_break_duration_spinbox)
+
+        self.pomos_cycle_spinbox = QSpinBox()
+        self.pomos_cycle_spinbox.setRange(1, 12)  # Min 1 pomo, Max 12 pomos before long break
+        self.pomos_cycle_spinbox.setValue(self.current_pomos_before_long_break)
+        form_layout.addRow("Pomodoros before Long Break:", self.pomos_cycle_spinbox)
+
+        main_layout.addLayout(form_layout)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        main_layout.addWidget(button_box)
+
+    def get_settings(self):
+        new_durations = {
+            PomodoroApp.STATE_POMODORO: self.pomodoro_duration_spinbox.value(),
+            PomodoroApp.STATE_SHORT_BREAK: self.short_break_duration_spinbox.value(),
+            PomodoroApp.STATE_LONG_BREAK: self.long_break_duration_spinbox.value()
+        }
+        new_pomos_before_long_break = self.pomos_cycle_spinbox.value()
+        return new_durations, new_pomos_before_long_break
+
 
 class PomodoroApp(QWidget):
     # Constants for Pomodoro states
@@ -115,11 +171,17 @@ class PomodoroApp(QWidget):
         self.skip_button.setObjectName("skipButton")
         self.skip_button.clicked.connect(self.skip_to_next_state)
         controls_layout.addWidget(self.skip_button)
+        
+        self.settings_button = QPushButton("Settings")
+        self.settings_button.setObjectName("settingsButton")
+        self.settings_button.clicked.connect(self.open_settings_dialog)
+        controls_layout.addWidget(self.settings_button)
+
 
         main_layout.addLayout(controls_layout)
 
         # Settings Button (placeholder for future)
-        # self.settings_button = QPushButton("Settings")
+        # self.settings_button = QPushButton("Settings") # Moved into controls_layout
         # self.settings_button.setObjectName("settingsButton")
         # self.settings_button.clicked.connect(self.open_settings) # To be implemented
         # main_layout.addWidget(self.settings_button, alignment=Qt.AlignCenter)
@@ -288,7 +350,28 @@ class PomodoroApp(QWidget):
             self.waiting_for_sound_to_finish_for_transition = False 
             self.transition_to_next_state()
 
-    # def open_settings(self):
+    def open_settings_dialog(self):
+        # Pass a copy of current_durations to avoid direct modification if dialog is cancelled
+        dialog = SettingsDialog(dict(self.durations), self.pomodoros_before_long_break, self)
+        if dialog.exec():  # exec() is blocking and returns True if accepted (e.g. QDialog.Accepted)
+            new_durations, new_pomos_before_long_break = dialog.get_settings()
+
+            self.durations = new_durations
+            self.pomodoros_before_long_break = new_pomos_before_long_break
+
+            self.update_cycle_display() # Update the "X/Y" display immediately
+
+            # If the timer is not active (i.e., it's showing "Start" or has just finished a session
+            # and is waiting for the user to start the next one), then update the
+            # current_time_seconds to reflect the new duration for the current_state.
+            if not self.timer.isActive() and not self.is_paused:
+                self.current_time_seconds = self.durations[self.current_state] * 60
+                self.update_display_time()
+            
+            print(f"Settings updated. Durations: {self.durations}, Pomodoros before long break: {self.pomodoros_before_long_break}")
+            print("New durations will apply to subsequent sessions. Current session, if active, will continue with its original duration unless reset.")
+
+    # def open_settings(self): # Replaced by open_settings_dialog
     #     # Placeholder for settings dialog
     #     # dialog = SettingsDialog(self.durations, self.pomodoros_before_long_break, self)
     #     # if dialog.exec():
